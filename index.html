@@ -4,37 +4,155 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Olalekan Aleem — Portfolio</title>
+  <meta name="description" content="Portfolio PDF — view online or download." />
+  <meta name="theme-color" content="#0f1115" />
+
+  <!-- Basic, elegant one-pager styles -->
   <style>
-    :root { --bg:#0f1115; --fg:#e8e8ea; --muted:#9aa0a6; }
+    :root{
+      --bg:#0f1115;        /* page background */
+      --fg:#e7e9ec;        /* main text */
+      --muted:#a3a8b3;     /* subtle text */
+      --card:#141821;      /* panels */
+      --line:#212635;      /* borders */
+      --brand:#6ee7ff;     /* accent */
+      --brand2:#a78bfa;    /* accent 2 */
+    }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial}
-    header{position:fixed;top:0;left:0;right:0;display:flex;gap:.75rem;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(15,17,21,.6);backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid #222}
-    h1{margin:0;font-size:16px;font-weight:600}
-    .muted{color:var(--muted);font-size:13px}
-    .btn{padding:8px 12px;border:1px solid #333;border-radius:10px;text-decoration:none;color:var(--fg)}
-    main{padding:64px 0 0}
-    iframe{display:block;width:100%;height:calc(100vh - 64px);border:0}
-    footer{position:fixed;bottom:0;left:0;right:0;padding:6px 12px;background:rgba(15,17,21,.6);border-top:1px solid #222;text-align:center;font-size:12px;color:var(--muted)}
+    body{
+      margin:0; background:linear-gradient(180deg, #0b0e13 0%, #0f1115 20%, #101318 100%);
+      color:var(--fg);
+      font:15px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Header */
+    .shell{max-width:1100px;margin:0 auto;padding:0 20px}
+    header{
+      position:sticky; top:0; z-index:10;
+      background:rgba(15,17,21,.75);
+      backdrop-filter:saturate(140%) blur(8px);
+      border-bottom:1px solid var(--line);
+    }
+    .bar{display:flex; gap:12px; align-items:center; justify-content:space-between; padding:14px 0}
+    .title{display:flex; flex-direction:column}
+    .title h1{margin:0; font-size:16px; letter-spacing:.2px}
+    .title .sub{margin:0; color:var(--muted); font-size:12px}
+
+    .actions{display:flex; gap:10px; flex-wrap:wrap}
+    .btn{
+      appearance:none; border:1px solid var(--line); background:var(--card); color:var(--fg);
+      padding:9px 12px; border-radius:12px; text-decoration:none; font-weight:600; font-size:14px;
+      display:inline-flex; align-items:center; gap:8px; transition:.2s transform, .2s background;
+    }
+    .btn:hover{transform:translateY(-1px); background:#1a2030}
+    .btn.brand{border-color:transparent; background:linear-gradient(90deg, var(--brand), var(--brand2)); color:#0b0e13}
+    .btn.small{font-size:13px; padding:7px 10px}
+
+    /* Hero note (mobile tips / fallback) */
+    .note{
+      margin:16px 0 0; color:var(--muted); font-size:13px;
+    }
+
+    /* Viewer panel */
+    main{padding:22px 0 18px}
+    .panel{
+      background:rgba(20,24,33,.85);
+      border:1px solid var(--line);
+      border-radius:16px;
+      overflow:hidden;
+      shadow: 0 10px 24px rgba(0,0,0,.35);
+    }
+    .viewer{
+      width:100%;
+      height:75vh;      /* desktop height */
+      border:0;
+      display:block;
+    }
+
+    /* Footer */
+    footer{
+      color:var(--muted);
+      border-top:1px solid var(--line);
+      padding:12px 0 30px;
+      margin-top:16px;
+      font-size:12px;
+      text-align:center;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 860px){
+      .viewer{height:82vh}        /* taller on phones */
+      .bar{align-items:flex-start}
+    }
   </style>
 </head>
 <body>
   <header>
-    <div>
-      <h1>Olalekan Aleem — Portfolio</h1>
-      <div class="muted">PDF viewer • GitHub Pages</div>
+    <div class="shell">
+      <div class="bar">
+        <div class="title">
+          <h1>Olalekan Aleem — Portfolio</h1>
+          <p class="sub">Interactive PDF viewer • Fast to load • Easy to share</p>
+        </div>
+
+        <div class="actions">
+          <!-- These links will be filled by JS with the correct file name -->
+          <a id="btnOpen" class="btn brand" href="#" target="_blank" rel="noopener">
+            Open PDF
+          </a>
+          <a id="btnDownload" class="btn" href="#" download>
+            Download
+          </a>
+        </div>
+      </div>
     </div>
-    <nav>
-      <a class="btn" href="portfolio.pdf" download>Download PDF</a>
-      <a class="btn" href="portfolio.pdf" target="_blank" rel="noopener">Open in new tab</a>
-    </nav>
   </header>
 
-  <main>
-    <iframe src="portfolio.pdf" title="Portfolio PDF"></iframe>
+  <main class="shell">
+    <div class="panel">
+      <!-- The iframe source is set by JS so filenames with spaces work -->
+      <iframe id="pdfFrame" class="viewer" title="Portfolio PDF"></iframe>
+    </div>
+
+    <p class="note">
+      Tip: If the PDF doesn’t show on some mobile browsers, tap <b>Open PDF</b> to view it in a new tab,
+      or use <b>Download</b>.
+    </p>
   </main>
 
-  <footer>© <span id="y"></span> Olalekan Aleem</footer>
-  <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+  <footer>
+    © <span id="y"></span> Olalekan Aleem • Hosted on GitHub Pages
+  </footer>
+
+  <script>
+    // === CONFIG: set your exact PDF filename here ===
+    // If you renamed your file to 'portfolio.pdf', leave as is.
+    const pdfFile = 'portfolio.pdf';
+    // If you kept your original name with spaces, e.g.:
+    // const pdfFile = 'Olalekan PDF Portfolio.pdf';
+
+    // Build safe URL (handles spaces and unicode)
+    const safeURL = encodeURI(pdfFile);
+
+    // Fill iframe and buttons
+    document.getElementById('pdfFrame').src = safeURL;
+    document.getElementById('btnOpen').href = safeURL;
+    document.getElementById('btnDownload').href = safeURL;
+
+    // Year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Lightweight fallback: if iframe errors (CSP or blocked), show a message.
+    document.getElementById('pdfFrame').addEventListener('error', () => {
+      const panel = document.querySelector('.panel');
+      panel.innerHTML = `
+        <div style="padding:24px">
+          <p style="margin:0 0 10px; color:#e7e9ec; font-weight:600">We couldn't display the PDF here.</p>
+          <p style="margin:0 0 18px; color:#a3a8b3">Your browser may block inline PDFs. Use the buttons above to open or download it.</p>
+        </div>`;
+    });
+  </script>
 </body>
 </html>
