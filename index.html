@@ -7,7 +7,6 @@
   <meta name="description" content="Interactive flipbook viewer powered by 3D FlipBook jQuery plugin."/>
   <meta name="theme-color" content="#0f1115"/>
 
-  <!-- Page styles -->
   <style>
     :root{
       --bg:#0f1115; --fg:#e8e8ea; --muted:#9aa0a6; --line:#23283a;
@@ -46,36 +45,23 @@
     .note{color:var(--muted); font-size:13px; margin:12px 0 0}
     footer{color:var(--muted); border-top:1px solid var(--line); text-align:center; padding:12px 0 30px; font-size:12px}
 
-    /* Small screens: give more height */
     @media (max-width:860px){
       #flipbookContainer{height:86vh}
     }
   </style>
 
-  <!-- jQuery (required by the plugin) -->
+  <!-- jQuery (load ONCE) -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 
-  <!-- 3D FlipBook assets (CSS + JS + dependencies) -->
-  <!-- The plugin includes its own PDF.js/Three.js copies via CDN build below -->
+  <!-- FlipBook CSS -->
   <link href="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/css/flipbook.min.css" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/js/flipbook.min.js"></script>
-  <!-- If your browser console says it needs pdf/three workers separately, uncomment these lines:
+
+  <!-- Load dependencies EXPLICITLY first -->
   <script src="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/js/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/js/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/js/pdf.worker.min.js"></script>
-  -->
-  <!-- jQuery -->
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 
-  <!-- 3D FlipBook assets (CSS + JS + dependencies) -->
-  <link href="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/css/flipbook.min.css" rel="stylesheet"/>
-  
-  <!-- Load dependencies manually -->
-  <script src="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/js/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/js/pdf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/js/pdf.worker.min.js"></script>
-  
-  <!-- Then load the main FlipBook plugin -->
+  <!-- Then the FlipBook plugin -->
   <script src="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/js/flipbook.min.js"></script>
 </head>
 <body>
