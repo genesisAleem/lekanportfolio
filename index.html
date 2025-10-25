@@ -1,80 +1,110 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Olalekan Aleem — Interactive PDF (3D FlipBook)</title>
-  <meta name="description" content="Interactive flipbook viewer powered by 3D FlipBook jQuery plugin."/>
-  <meta name="theme-color" content="#0f1115"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Olalekan Aleem — Portfolio</title>
+  <meta name="description" content="Portfolio PDF — view online or download." />
+  <meta name="theme-color" content="#0f1115" />
 
+  <!-- Basic, elegant one-pager styles -->
   <style>
     :root{
-      --bg:#0f1115; --fg:#e8e8ea; --muted:#9aa0a6; --line:#23283a;
-      --card:#141a24; --brand:#6ee7ff; --brand2:#a78bfa;
+      --bg:#0f1115;        /* page background */
+      --fg:#e7e9ec;        /* main text */
+      --muted:#a3a8b3;     /* subtle text */
+      --card:#141821;      /* panels */
+      --line:#212635;      /* borders */
+      --brand:#6ee7ff;     /* accent */
+      --brand2:#a78bfa;    /* accent 2 */
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; background:linear-gradient(180deg,#0b0e13 0%,#0f1115 18%,#101319 100%);
-      color:var(--fg); font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      margin:0; background:linear-gradient(180deg, #0b0e13 0%, #0f1115 20%, #101318 100%);
+      color:var(--fg);
+      font:15px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
+
+    /* Header */
+    .shell{max-width:1100px;margin:0 auto;padding:0 20px}
     header{
-      position:sticky; top:0; z-index:10; border-bottom:1px solid var(--line);
-      background:rgba(15,17,21,.72); backdrop-filter:saturate(140%) blur(8px);
+      position:sticky; top:0; z-index:10;
+      background:rgba(15,17,21,.75);
+      backdrop-filter:saturate(140%) blur(8px);
+      border-bottom:1px solid var(--line);
     }
-    .shell{max-width:1200px; margin:0 auto; padding:0 18px}
     .bar{display:flex; gap:12px; align-items:center; justify-content:space-between; padding:14px 0}
-    h1{margin:0; font-size:16px}
-    .sub{margin:0; color:var(--muted); font-size:12px}
+    .title{display:flex; flex-direction:column}
+    .title h1{margin:0; font-size:16px; letter-spacing:.2px}
+    .title .sub{margin:0; color:var(--muted); font-size:12px}
+
     .actions{display:flex; gap:10px; flex-wrap:wrap}
     .btn{
-      border:1px solid var(--line); background:var(--card); color:var(--fg);
+      appearance:none; border:1px solid var(--line); background:var(--card); color:var(--fg);
       padding:9px 12px; border-radius:12px; text-decoration:none; font-weight:600; font-size:14px;
-      display:inline-flex; gap:8px; align-items:center; transition:.2s transform,.2s background;
+      display:inline-flex; align-items:center; gap:8px; transition:.2s transform, .2s background;
     }
     .btn:hover{transform:translateY(-1px); background:#1a2030}
-    .btn.brand{border-color:transparent; background:linear-gradient(90deg,var(--brand),var(--brand2)); color:#081018}
+    .btn.brand{border-color:transparent; background:linear-gradient(90deg, var(--brand), var(--brand2)); color:#0b0e13}
+    .btn.small{font-size:13px; padding:7px 10px}
 
-    main{padding:18px 0}
-    .panel{
-      background:rgba(20,26,36,.9); border:1px solid var(--line); border-radius:16px; overflow:hidden;
-      min-height:60vh;
+    /* Hero note (mobile tips / fallback) */
+    .note{
+      margin:16px 0 0; color:var(--muted); font-size:13px;
     }
-    #flipbookContainer{width:100%; height:78vh; min-height:520px}
-    .note{color:var(--muted); font-size:13px; margin:12px 0 0}
-    footer{color:var(--muted); border-top:1px solid var(--line); text-align:center; padding:12px 0 30px; font-size:12px}
 
-    @media (max-width:860px){
-      #flipbookContainer{height:86vh}
+    /* Viewer panel */
+    main{padding:22px 0 18px}
+    .panel{
+      background:rgba(20,24,33,.85);
+      border:1px solid var(--line);
+      border-radius:16px;
+      overflow:hidden;
+      shadow: 0 10px 24px rgba(0,0,0,.35);
+    }
+    .viewer{
+      width:100%;
+      height:75vh;      /* desktop height */
+      border:0;
+      display:block;
+    }
+
+    /* Footer */
+    footer{
+      color:var(--muted);
+      border-top:1px solid var(--line);
+      padding:12px 0 30px;
+      margin-top:16px;
+      font-size:12px;
+      text-align:center;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 860px){
+      .viewer{height:82vh}        /* taller on phones */
+      .bar{align-items:flex-start}
     }
   </style>
-
-  <!-- jQuery (load ONCE) -->
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-
-  <!-- FlipBook CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/css/flipbook.min.css" rel="stylesheet"/>
-
-  <!-- Load dependencies EXPLICITLY first -->
-  <script src="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/js/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/js/pdf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/js/pdf.worker.min.js"></script>
-
-  <!-- Then the FlipBook plugin -->
-  <script src="https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/js/flipbook.min.js"></script>
 </head>
 <body>
   <header>
     <div class="shell">
       <div class="bar">
-        <div>
-          <h1>Olalekan Aleem — Interactive Portfolio</h1>
-          <p class="sub">3D page-flip viewer • Zoom • Fullscreen • Mobile friendly</p>
+        <div class="title">
+          <h1>Olalekan Aleem — Portfolio</h1>
+          <p class="sub">Interactive PDF viewer • Fast to load • Easy to share</p>
         </div>
+
         <div class="actions">
-          <a id="openBtn" class="btn brand" href="#" target="_blank" rel="noopener">Open PDF</a>
-          <a id="downloadBtn" class="btn" href="#" download>Download</a>
+          <!-- These links will be filled by JS with the correct file name -->
+          <a id="btnOpen" class="btn brand" href="#" target="_blank" rel="noopener">
+            Open PDF
+          </a>
+          <a id="btnDownload" class="btn" href="#" download>
+            Download
+          </a>
         </div>
       </div>
     </div>
@@ -82,66 +112,47 @@
 
   <main class="shell">
     <div class="panel">
-      <div id="flipbookContainer"></div>
+      <!-- The iframe source is set by JS so filenames with spaces work -->
+      <iframe id="pdfFrame" class="viewer" title="Portfolio PDF"></iframe>
     </div>
-    <p class="note">If the flipbook doesn’t render on some mobile browsers, use <b>Open PDF</b> or <b>Download</b>.</p>
+
+    <p class="note">
+      Tip: If the PDF doesn’t show on some mobile browsers, tap <b>Open PDF</b> to view it in a new tab,
+      or use <b>Download</b>.
+    </p>
   </main>
 
-  <footer>© <span id="y"></span> Olalekan Aleem • Hosted on GitHub Pages</footer>
+  <footer>
+    © <span id="y"></span> Olalekan Aleem • Hosted on GitHub Pages
+  </footer>
 
   <script>
-    // ==== Set your exact PDF filename here (case-sensitive) ====
-    const PDF_FILE = 'portfolio.pdf'; // e.g. 'Olalekan PDF Portfolio.pdf'
+    // === CONFIG: set your exact PDF filename here ===
+    // If you renamed your file to 'portfolio.pdf', leave as is.
+    const pdfFile = 'portfolio.pdf';
+    // If you kept your original name with spaces, e.g.:
+    // const pdfFile = 'Olalekan PDF Portfolio.pdf';
 
-    const safeURL = encodeURI(PDF_FILE);
+    // Build safe URL (handles spaces and unicode)
+    const safeURL = encodeURI(pdfFile);
+
+    // Fill iframe and buttons
+    document.getElementById('pdfFrame').src = safeURL;
+    document.getElementById('btnOpen').href = safeURL;
+    document.getElementById('btnDownload').href = safeURL;
+
+    // Year
     document.getElementById('y').textContent = new Date().getFullYear();
-    document.getElementById('openBtn').href = safeURL;
-    document.getElementById('downloadBtn').href = safeURL;
 
-    // Initialize the FlipBook after DOM is ready
-    $(function () {
-      try {
-        $('#flipbookContainer').FlipBook({
-          pdf: safeURL,
-          skin: 'light',
-          backgroundColor: '#0f1115',
-          mobile: true,
-          responsive: true,
-          minZoom: 0.9,
-          startPage: 1,
-          controlsProps: {
-            downloadURL: safeURL,
-            zoomIn: true, zoomOut: true, zoomMax: 4,
-            pageNumberBox: true,
-            enableSearch: true,
-            tableOfContent: false,
-            share: false,
-            sounds: false
-          },
-          propertiesCallback: function (props) {
-            props.page.depth = 8;
-            props.cover.padding = 0;
-            return props;
-          },
-          template: {
-            html: 'https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/templates/default-book-view.html',
-            styles: [
-              'https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/css/flipbook.min.css'
-            ],
-            script: 'https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/js/flipbook.min.js',
-            sounds: null
-          }
-        });
-      } catch (e) {
-        console.error('FlipBook init error:', e);
-        document.getElementById('flipbookContainer').innerHTML =
-          '<div style="padding:18px;color:#e8e8ea">Unable to load the 3D FlipBook in this browser. Please use the buttons above to view or download the PDF.</div>';
-      }
+    // Lightweight fallback: if iframe errors (CSP or blocked), show a message.
+    document.getElementById('pdfFrame').addEventListener('error', () => {
+      const panel = document.querySelector('.panel');
+      panel.innerHTML = `
+        <div style="padding:24px">
+          <p style="margin:0 0 10px; color:#e7e9ec; font-weight:600">We couldn't display the PDF here.</p>
+          <p style="margin:0 0 18px; color:#a3a8b3">Your browser may block inline PDFs. Use the buttons above to open or download it.</p>
+        </div>`;
     });
   </script>
-
-  <noscript>
-    <div style="padding:18px;color:#e8e8ea">JavaScript is required to view the flipbook. Use the buttons above to open or download the PDF.</div>
-  </noscript>
 </body>
 </html>
