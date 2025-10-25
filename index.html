@@ -84,17 +84,13 @@
     <div class="panel">
       <div id="flipbookContainer"></div>
     </div>
-    <p class="note">
-      If the flipbook doesn’t render (older mobile browsers), use <b>Open PDF</b> or <b>Download</b>.
-    </p>
+    <p class="note">If the flipbook doesn’t render on some mobile browsers, use <b>Open PDF</b> or <b>Download</b>.</p>
   </main>
 
-  <footer>
-    © <span id="y"></span> Olalekan Aleem • Hosted on GitHub Pages
-  </footer>
+  <footer>© <span id="y"></span> Olalekan Aleem • Hosted on GitHub Pages</footer>
 
   <script>
-    // ====== CONFIG: set your file name here ======
+    // ==== Set your exact PDF filename here (case-sensitive) ====
     const PDF_FILE = 'portfolio.pdf'; // e.g. 'Olalekan PDF Portfolio.pdf'
 
     const safeURL = encodeURI(PDF_FILE);
@@ -102,32 +98,31 @@
     document.getElementById('openBtn').href = safeURL;
     document.getElementById('downloadBtn').href = safeURL;
 
-    // ====== Init 3D FlipBook ======
-    // Basic options: auto-resolution, responsive, shadows, controls, etc.
-    function initFlipBook() {
+    // Initialize the FlipBook after DOM is ready
+    $(function () {
       try {
         $('#flipbookContainer').FlipBook({
           pdf: safeURL,
-          // Appearance
-          skin: 'light',                   // or 'dark'
+          skin: 'light',
           backgroundColor: '#0f1115',
-          // Controls
+          mobile: true,
+          responsive: true,
+          minZoom: 0.9,
+          startPage: 1,
           controlsProps: {
-            downloadURL: safeURL,          // built-in download button
-            enableSearch: true,
-            pageNumberBox: true,
+            downloadURL: safeURL,
             zoomIn: true, zoomOut: true, zoomMax: 4,
+            pageNumberBox: true,
+            enableSearch: true,
             tableOfContent: false,
             share: false,
             sounds: false
           },
-          // Book
           propertiesCallback: function (props) {
-            props.page.depth = 8;          // page thickness
+            props.page.depth = 8;
             props.cover.padding = 0;
             return props;
           },
-          // Viewer
           template: {
             html: 'https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/templates/default-book-view.html',
             styles: [
@@ -135,28 +130,18 @@
             ],
             script: 'https://cdn.jsdelivr.net/npm/3d-flip-book@1.7.0/dist/js/flipbook.min.js',
             sounds: null
-          },
-          // Behaviour
-          mobile: true,
-          responsive: true,
-          minZoom: 0.9,
-          startPage: 1
+          }
         });
       } catch (e) {
         console.error('FlipBook init error:', e);
-        // Graceful fallback
         document.getElementById('flipbookContainer').innerHTML =
-          '<div style="padding:18px;color:#e8e8ea">Unable to load the 3D FlipBook in this browser. ' +
-          'Please use the buttons above to view or download the PDF.</div>';
+          '<div style="padding:18px;color:#e8e8ea">Unable to load the 3D FlipBook in this browser. Please use the buttons above to view or download the PDF.</div>';
       }
-    }
-
-    // Wait for jQuery and DOM
-    if (window.jQuery) {
-      $(function(){ initFlipBook(); });
-    } else {
-      document.addEventListener('DOMContentLoaded', initFlipBook);
-    }
+    });
   </script>
+
+  <noscript>
+    <div style="padding:18px;color:#e8e8ea">JavaScript is required to view the flipbook. Use the buttons above to open or download the PDF.</div>
+  </noscript>
 </body>
 </html>
